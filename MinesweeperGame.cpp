@@ -3,28 +3,33 @@
 #include <iomanip>
 using namespace std;
 
-vector<vector<char>> createMinesBoard(unsigned int x = 10, unsigned int y = 10, unsigned int mines = 33);
+vector<vector<char>> createBlankBoard(unsigned int x = 10, unsigned int y = 10);
+vector<vector<char>> createMinesBoard(unsigned int x = 10, unsigned int y = 10, unsigned int mines = 20);
 vector<vector<char>> createPlayingBoard(vector<vector<char>>);
 void displayBoard(vector<vector<char>>);
 
 int main() {
-	vector<vector<char>> minesBoard = createMinesBoard(5,5,5);
+	//Gets user input for board height, width, and number of mines
+	unsigned int temp;
+	cout << "Enter board height: ";
+	cin >> temp;
+	const unsigned int BOARD_HEIGHT = temp;
+	cout << "Enter board width: ";
+	cin >> temp;
+	const unsigned int BOARD_WIDTH = temp;
+	cout << "Enter number of mines: ";
+	cin >> temp;
+	const unsigned int NUMBER_OF_MINES = temp;
+
+	vector<vector<char>> minesBoard = createMinesBoard(BOARD_HEIGHT, BOARD_WIDTH, NUMBER_OF_MINES);
 	vector<vector<char>> playingBoard = createPlayingBoard(minesBoard);
 	displayBoard(playingBoard);
 }
 
 //Creates a board that stores the locations of all the mines
-vector<vector<char>> createMinesBoard(unsigned int x, unsigned int y, unsigned int mines) {
-
-	//Create board of specified size, but with no mines
-	vector<vector<char>> board;
-	for (unsigned int i = 0; i < y; i++) {
-		board.push_back(vector<char>());
-		for (unsigned int j = 0; j < x; j++) {
-			board[i].push_back('0');
-		}
-	}
-	//Add mines into board
+vector<vector<char>> createMinesBoard(unsigned int y, unsigned int x, unsigned int mines) {
+	vector<vector<char>> board = createBlankBoard(y , x);
+	
 	srand(0);
 	unsigned int implementedMines = 0;
 	unsigned int randX = rand() % x;
@@ -47,70 +52,83 @@ vector<vector<char>> createMinesBoard(unsigned int x, unsigned int y, unsigned i
 	return board;
 }
 
-//Creates board that shows number of surrounding mines
+//Creates board that shows number of surrounding mines for every square
 vector<vector<char>> createPlayingBoard(vector<vector<char>> minesBoard) {
-	vector<vector<char>> board = minesBoard;
-	for (unsigned int i = 0; i < minesBoard.size(); i++) {
-		for (unsigned int j = 0; j < minesBoard[i].size(); j++) {
+
+	vector<vector<char>> board = createBlankBoard(minesBoard.size(), minesBoard[0].size());
+
+	for (unsigned int y = 0; y < minesBoard.size(); y++) {
+		for (unsigned int x = 0; x < minesBoard[y].size(); x++) {
 			char numOfMines = '0';
-			if (minesBoard[i][j] == '1') {
-				board[i][j] = 'M';
+			if (minesBoard[y][x] == '1') {
+				board[y][x] = 'M';
 			}
 			else {
-				if (i != 0) {
-					if (minesBoard[i - 1][j] == '1') {
+				if (y != 0) {
+					if (minesBoard[y - 1][x] == '1') {
 						numOfMines++;
 					}
-					if (j != 0) {
-						if (minesBoard[i - 1][j - 1] == '1') {
+					if (x != 0) {
+						if (minesBoard[y - 1][x - 1] == '1') {
 							numOfMines++;
 						}
 					}
-					if (j != board[i].size() - 1) {
-						if (minesBoard[i - 1][j + 1] == '1') {
-							numOfMines++;
-						}
-					}
-				}
-				if (i != board.size() - 1) {
-					if (minesBoard[i + 1][j] == '1') {
-						numOfMines++;
-					}
-					if (j != minesBoard[i].size() - 1) {
-						if (minesBoard[i + 1][j + 1] == '1') {
-							numOfMines++;
-						}
-					}
-					if (j != 0) {
-						if (minesBoard[i + 1][j - 1] == '1') {
+					if (x != board[y].size() - 1) {
+						if (minesBoard[y - 1][x + 1] == '1') {
 							numOfMines++;
 						}
 					}
 				}
-				if (j != board[i].size() - 1) {
-					if (minesBoard[i][j + 1] == '1') {
+				if (y != board.size() - 1) {
+					if (minesBoard[y + 1][x] == '1') {
+						numOfMines++;
+					}
+					if (x != minesBoard[y].size() - 1) {
+						if (minesBoard[y + 1][x + 1] == '1') {
+							numOfMines++;
+						}
+					}
+					if (x != 0) {
+						if (minesBoard[y + 1][x - 1] == '1') {
+							numOfMines++;
+						}
+					}
+				}
+				if (x != board[y].size() - 1) {
+					if (minesBoard[y][x + 1] == '1') {
 						numOfMines++;
 					}
 				}
-				if (j != 0) {
-					if (minesBoard[i][j - 1] == '1') {
+				if (x != 0) {
+					if (minesBoard[y][x - 1] == '1') {
 						numOfMines++;
 					}
 				}
-				board[i][j] = numOfMines;
+				board[y][x] = numOfMines;
 			}
 		}
 	}
 	return board;
 }
 
-
 //Displays the given board
 void displayBoard(vector<vector<char>> board) {
-	for (unsigned int i = 0; i < board.size(); i++) {
-		for (unsigned int j = 0; j < board[i].size(); j++) {
-			cout << board[i][j] << "  ";
+	for (unsigned int y = 0; y < board.size(); y++) {
+		for (unsigned int x = 0; x < board[y].size(); x++) {
+			cout << board[y][x] << "  ";
 		}
 		cout << endl;
 	}
+}
+
+//Creates a blank board
+vector<vector<char>> createBlankBoard(unsigned int x, unsigned int y) {
+	vector<vector<char>> board;
+	for (unsigned int i = 0; i < y; i++) {
+		board.push_back(vector<char>());
+		for (unsigned int j = 0; j < x; j++) {
+			board[i].push_back('0');
+		}
+	}
+	return board;
 }
