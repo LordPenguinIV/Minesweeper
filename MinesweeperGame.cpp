@@ -22,6 +22,13 @@ int main() {
 
 	Board board = Board(BOARD_HEIGHT, BOARD_WIDTH, NUMBER_OF_MINES);
 	board.displayBoard();
+	cout << endl;
+	board.generateMines(0, 0);
+	board.displayBoard();
+	cout << endl;
+	board.generateNumMinesAdjacent();
+	board.displayBoard();
+
 }
 
 //Creates board that shows number of surrounding mines for every square

@@ -16,6 +16,8 @@ class Board {
 		Board(unsigned int boardY = 10, unsigned int boardX = 10, unsigned int mines = 20);
 		void displayBoard();
 		void generateMines(unsigned int, unsigned int);
+		bool isMine(unsigned int, unsigned int);
+		void generateNumMinesAdjacent();
 };
 
 #endif // !BOARD_H
