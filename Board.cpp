@@ -18,22 +18,22 @@ void Board::displayBoard() {
 	for (unsigned int y = 0; y < BOARD_HEIGHT; y++) {
 		for (unsigned int x = 0; x < BOARD_WIDTH; x++) {
 			if (!isMine(y, x))
-				cout << this->board[y][x].getNumOfAdjMines() << "  ";
+				cout << this->board[y][x].getNumOfAdjMines() << " ";
 			else
-				cout << "M  ";
+				cout << "M ";
 		}
 		cout << endl;
 	}
 }
 
 void Board::generateMines(unsigned int startY, unsigned int startX) {
-	srand(0);
+	srand((unsigned)time(0));
 	unsigned int implementedMines = 0;
 	unsigned int randX = rand() % BOARD_WIDTH;
 	unsigned int randY = rand() % BOARD_HEIGHT;
 
 	while (implementedMines < NUM_OF_MINES) {
-		if (!this->board[randY][randX].getIsMine() && (randX != startX && randY != startY)) {
+		if ((!this->board[randY][randX].getIsMine()) || (randX != startX && randY != startY)) {
 			this->board[randY][randX].setIsMine(true);
 			implementedMines++;
 			randX = rand() % BOARD_WIDTH;
