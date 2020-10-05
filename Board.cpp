@@ -33,7 +33,7 @@ void Board::generateMines(unsigned int startY, unsigned int startX) {
 	unsigned int randY = rand() % BOARD_HEIGHT;
 
 	while (implementedMines < NUM_OF_MINES) {
-		if ((!this->board[randY][randX].getIsMine()) || (randX != startX && randY != startY)) {
+		if ((!this->board[randY][randX].getIsMine()) && !(randX == startX && randY == startY)) {
 			this->board[randY][randX].setIsMine(true);
 			implementedMines++;
 			randX = rand() % BOARD_WIDTH;
